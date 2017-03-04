@@ -1,5 +1,5 @@
 bl_info = {
-    "name": "Solid Lights Protoshader",
+    "name": "Solid Lights studio",
     "description": "utilities for solid shading",
     "author": "Jean Da Costa Machado",
     "version": (0, 0, 1),
@@ -7,8 +7,7 @@ bl_info = {
     "location": "View3D",
     "warning": "This addon is still in development.",
     "wiki_url": "",
-    "category": "Render" }
-
+    "category": "Render"}
 
 import bpy
 from bpy import context
@@ -16,96 +15,114 @@ from mathutils import Vector
 from mathutils import Euler
 
 
-def protoshader_update (self, context):
-    
-    if context.scene.solid_ligths_protosahder_enable == False:
+def studio_update(self, context):
+    if context.scene.solid_lights_studio_enable == False:
         return None
     
-    ligths = context.user_preferences.system.solid_lights
+    lights = context.user_preferences.system.solid_lights
     scene = context.scene
-    f_dcol = scene.solid_ligths_protoshader_front_diffcol
-    f_scol = scene.solid_ligths_protoshader_front_speccol
-    b_dcol = scene.solid_ligths_protoshader_back_diffcol
-    b_scol = scene.solid_ligths_protoshader_back_speccol
-    h_shift = scene.solid_ligths_protoshader_back_hueshift
+    f_dcol = scene.solid_lights_studio_front_diffcol
+    f_scol = scene.solid_lights_studio_front_speccol
+    b_dcol = scene.solid_lights_studio_back_diffcol
+    b_scol = scene.solid_lights_studio_back_speccol
+    h_shift = scene.solid_lights_studio_back_hueshift
     
-    b_dcol_hp = Vector((b_dcol[0] + (h_shift[0]- 0.5) * 0.5 ,
-                        b_dcol[1] + (h_shift[1]- 0.5) * 0.5 ,
-                        b_dcol[2] + (h_shift[2]- 0.5) * 0.5 ))
+    b_dcol_hp = Vector((b_dcol[0] + (h_shift[0] - 0.5) * 0.5,
+                        b_dcol[1] + (h_shift[1] - 0.5) * 0.5,
+                        b_dcol[2] + (h_shift[2] - 0.5) * 0.5))
     
-    b_dcol_hm = Vector((b_dcol[0] - (h_shift[0]- 0.5) * 0.5 ,
-                        b_dcol[1] - (h_shift[1]- 0.5) * 0.5 ,
-                        b_dcol[2] - (h_shift[2]- 0.5) * 0.5 ))
+    b_dcol_hm = Vector((b_dcol[0] - (h_shift[0] - 0.5) * 0.5,
+                        b_dcol[1] - (h_shift[1] - 0.5) * 0.5,
+                        b_dcol[2] - (h_shift[2] - 0.5) * 0.5))
     
-        
-    if context.scene.solid_lights_protoshader_type == 'PLASTIC':
-        dir = context.scene.solid_lights_protoshader_direction
+    if context.scene.solid_lights_studio_type == '2K1F':
+        dir = context.scene.solid_lights_studio_direction
         back_dir = Vector((-dir.x, -dir.y, -dir.z + 1))
         fill_dir = Vector((dir.x, dir.y, dir.z + 0.5))
-        ligths[0].direction = dir
-        ligths[1].direction = fill_dir
-        ligths[2].direction = back_dir
-        ligths[0].diffuse_color = f_dcol
-        ligths[0].specular_color = Vector((f_scol[0] / 2,
+        lights[0].direction = dir
+        lights[1].direction = fill_dir
+        lights[2].direction = back_dir
+        lights[0].diffuse_color = f_dcol
+        lights[0].specular_color = Vector((f_scol[0] / 2,
                                            f_scol[1] / 2,
                                            f_scol[2] / 2,))
-        ligths[1].diffuse_color = Vector((
+        lights[1].diffuse_color = Vector((
             b_dcol_hp[0] * 0.25 + f_dcol[0] * 0.25,
             b_dcol_hp[1] * 0.25 + f_dcol[1] * 0.25,
             b_dcol_hp[2] * 0.25 + f_dcol[2] * 0.25))
-        ligths[1].specular_color = Vector((b_scol[0] / 5,
+        lights[1].specular_color = Vector((b_scol[0] / 5,
                                            b_scol[1] / 5,
                                            b_scol[2] / 5))
-        ligths[2].diffuse_color = b_dcol_hm
-        ligths[2].specular_color = b_scol
+        lights[2].diffuse_color = b_dcol_hm
+        lights[2].specular_color = b_scol
     
-    if context.scene.solid_lights_protoshader_type == 'WAX':
+    if context.scene.solid_lights_studio_type == '1K2FW':
         
-        dir = context.scene.solid_lights_protoshader_direction
+        dir = context.scene.solid_lights_studio_direction
         rotation_euler1 = Euler((0, 0, 1), "XYZ")
         rotation_euler2 = Euler((0, 0, -1), "XYZ")
         back_dir1 = Vector((-dir.x * 2, -dir.y * 2, -dir.z + 0.9))
         back_dir1.rotate(rotation_euler1)
         back_dir2 = Vector((-dir.x * 2, -dir.y * 2, -dir.z + 0.9))
         back_dir2.rotate(rotation_euler2)
-        ligths[0].direction = dir
-        ligths[1].direction = back_dir1
-        ligths[2].direction = back_dir2
-        ligths[0].diffuse_color = f_dcol
-        ligths[0].specular_color = f_scol
-        ligths[1].diffuse_color = b_dcol_hp
-        ligths[1].specular_color = b_scol
-        ligths[2].diffuse_color = b_dcol_hm
-        ligths[2].specular_color = b_scol
+        lights[0].direction = dir
+        lights[1].direction = back_dir1
+        lights[2].direction = back_dir2
+        lights[0].diffuse_color = f_dcol
+        lights[0].specular_color = f_scol
+        lights[1].diffuse_color = b_dcol_hp
+        lights[1].specular_color = b_scol
+        lights[2].diffuse_color = b_dcol_hm
+        lights[2].specular_color = b_scol
     
-    if context.scene.solid_lights_protoshader_type == 'METAL':
+    if context.scene.solid_lights_studio_type == '1K2FM':
         
-        dir = context.scene.solid_lights_protoshader_direction
+        dir = context.scene.solid_lights_studio_direction
         rotation_euler1 = Euler((0, 0, 1), "XYZ")
         rotation_euler2 = Euler((0, 0, -1), "XYZ")
         back_dir1 = Vector((-dir.x * 2, -dir.y * 2, -dir.z + 0.5))
         back_dir1.rotate(rotation_euler1)
         back_dir2 = Vector((-dir.x * 2, -dir.y * 2, -dir.z + 0.5))
         back_dir2.rotate(rotation_euler2)
-        ligths[0].direction = dir
-        ligths[1].direction = back_dir1
-        ligths[2].direction = back_dir2
-        ligths[0].diffuse_color = Vector((f_dcol[0] * 1.2,
+        lights[0].direction = dir
+        lights[1].direction = back_dir1
+        lights[2].direction = back_dir2
+        lights[0].diffuse_color = Vector((f_dcol[0] * 1.2,
                                           f_dcol[1] * 1.2,
                                           f_dcol[2] * 1.2))
-        ligths[0].specular_color = Vector((f_scol[0] * 2,
+        lights[0].specular_color = Vector((f_scol[0] * 2,
                                            f_scol[1] * 2,
                                            f_scol[2] * 2))
-        ligths[1].diffuse_color = b_dcol_hp
-        ligths[1].specular_color = Vector((f_scol[0] * 2,
+        lights[1].diffuse_color = b_dcol_hp
+        lights[1].specular_color = Vector((f_scol[0] * 2,
                                            f_scol[1] * 2,
                                            f_scol[2] * 2))
-        ligths[2].diffuse_color = b_dcol_hm
-        ligths[2].specular_color = Vector((f_scol[0] * 2,
+        lights[2].diffuse_color = b_dcol_hm
+        lights[2].specular_color = Vector((f_scol[0] * 2,
                                            f_scol[1] * 2,
                                            f_scol[2] * 2))
+    
+    if context.scene.solid_lights_studio_type == '1K2F':
         
+        dir = context.scene.solid_lights_studio_direction
+        rotation_euler1 = Euler((0, 0, 1.69296), "XYZ")
+        rotation_euler2 = Euler((0, 0, -1.69296), "XYZ")
+        back_dir1 = Vector((dir.x * 2, dir.y * 2, 0.5))
+        back_dir1.rotate(rotation_euler1)
+        back_dir2 = Vector((dir.x * 2, dir.y * 2, 0.5))
+        back_dir2.rotate(rotation_euler2)
+        lights[0].direction = dir
+        lights[1].direction = back_dir1
+        lights[2].direction = back_dir2
+        lights[0].diffuse_color = f_dcol
+        lights[0].specular_color = f_scol
+        lights[1].diffuse_color = b_dcol_hp
+        lights[1].specular_color = b_scol
+        lights[2].diffuse_color = b_dcol_hm
+        lights[2].specular_color = b_scol
+    
     return None
+
 
 class SolidLights(bpy.types.Panel):
     bl_idname = "solid_lights"
@@ -113,43 +130,48 @@ class SolidLights(bpy.types.Panel):
     bl_space_type = "VIEW_3D"
     bl_region_type = "TOOLS"
     bl_category = "Lights"
-
+    
     def draw(self, context):
         
-        ligths = context.user_preferences.system.solid_lights
+        lights = context.user_preferences.system.solid_lights
         
         layout = self.layout
         
-        for ligth in ligths:
+        for light in lights:
             col = layout.column()
             row = col.row()
             
             label_row = col.row(align = True)
             color_row = col.row(align = True)
-            ligth_row = col.row(align = False)
+            light_row = col.row(align = False)
             
             label_row.label("diffuse")
             label_row.label("specular")
-            color_row.prop(ligth, "diffuse_color", text = "")
-            color_row.prop(ligth, "specular_color", text = "")
-            ligth_row.prop(ligth, "use", text = "", toggle = True, expand = True, icon = "LAMP")
-            ligth_row.prop(ligth, "direction", text = "")
+            color_row.prop(light, "diffuse_color", text = "")
+            color_row.prop(light, "specular_color", text = "")
+            light_row.prop(light, "use",
+                           text = "",
+                           toggle = True,
+                           expand = True,
+                           icon = "LAMP")
+            light_row.prop(light, "direction", text = "")
 
-class SolidLightsProtoShader(bpy.types.Panel):
-    bl_idname = "solid_lights_ProtoShader"
-    bl_label = "Solid Lights protoshader"
+
+class SolidLightsStudio(bpy.types.Panel):
+    bl_idname = "solid_lights_studio"
+    bl_label = "Solid Lights studio"
     bl_space_type = "VIEW_3D"
     bl_region_type = "TOOLS"
     bl_category = "Lights"
-
+    
     def draw(self, context):
         layout = self.layout
         scene = context.scene
         
-        layout.prop(scene, "solid_ligths_protosahder_enable")
-        layout.prop(scene, "solid_lights_protoshader_direction",
-            text = "")
-        layout.prop(scene, "solid_lights_protoshader_type",)
+        layout.prop(scene, "solid_lights_studio_enable")
+        layout.prop(scene, "solid_lights_studio_direction",
+                    text = "")
+        layout.prop(scene, "solid_lights_studio_type", )
         row = layout.row()
         row.label("")
         row.label("Diffuse")
@@ -158,94 +180,100 @@ class SolidLightsProtoShader(bpy.types.Panel):
         col = layout.column()
         row = col.row()
         row.label("Front")
-        row.prop(scene, "solid_ligths_protoshader_front_diffcol", text = "")
-        row.prop(scene, "solid_ligths_protoshader_front_speccol", text = "")
+        row.prop(scene, "solid_lights_studio_front_diffcol", text = "")
+        row.prop(scene, "solid_lights_studio_front_speccol", text = "")
         row = col.row()
         row.label("back")
-        row.prop(scene, "solid_ligths_protoshader_back_diffcol", text = "")
-        row.prop(scene, "solid_ligths_protoshader_back_speccol", text = "")
-        layout.prop(scene, "solid_ligths_protoshader_back_hueshift")
+        row.prop(scene, "solid_lights_studio_back_diffcol", text = "")
+        row.prop(scene, "solid_lights_studio_back_speccol", text = "")
+        layout.prop(scene, "solid_lights_studio_back_hueshift")
+
 
 def register():
     bpy.utils.register_class(SolidLights)
-    bpy.utils.register_class(SolidLightsProtoShader)
-    bpy.types.Scene.solid_ligths_protosahder_enable = bpy.props.BoolProperty(
-        name = "Enable Protoshader",
-        default = False,
-        update = protoshader_update)
-    bpy.types.Scene.solid_lights_protoshader_type = bpy.props.EnumProperty(
-        name = "Type",
-        items = [("PLASTIC", "Plastic", "Plastic material"), 
-                ("WAX", "Wax", "Wax scatter material"),
-                ("METAL", "Metal", "Metalic material")],
-        default = "PLASTIC",
-        update = protoshader_update)
+    bpy.utils.register_class(SolidLightsStudio)
+    bpy.types.Scene.solid_lights_studio_enable = \
+        bpy.props.BoolProperty(
+                name = "Enable studio",
+                default = False,
+                update = studio_update)
+    bpy.types.Scene.solid_lights_studio_type = \
+        bpy.props.EnumProperty(
+                name = "Type",
+                items = [("2K1F", "2Keys 1Fill", "Plastic Like material"),
+                         ("1K2FW", "Wax 1Key 2Fill", "Fake Wax scatter material"),
+                         ("1K2FM", "Metallic 1Key 2Fill", "Metallic material"),
+                         ("1K2F", "1Key 2Fill", "Smooth Diffuse Material")],
+                default = "2K1F",
+                update = studio_update)
     
-    bpy.types.Scene.solid_lights_protoshader_direction =\
+    bpy.types.Scene.solid_lights_studio_direction = \
         bpy.props.FloatVectorProperty(
-        name = "Light Direction",
-        default = (-0.1, 0.5, 1),
-        subtype = "DIRECTION",
-        min = 0,
-        max = 1,
-        update = protoshader_update)
+                name = "Light Direction",
+                default = (-0.1, 0.5, 1),
+                subtype = "DIRECTION",
+                min = 0,
+                max = 1,
+                update = studio_update)
     
-    bpy.types.Scene.solid_ligths_protoshader_front_diffcol =\
+    bpy.types.Scene.solid_lights_studio_front_diffcol = \
         bpy.props.FloatVectorProperty(
-        name = "Front Diffuse Color",
-        default = (0.8, 0.8, 0.9),
-        subtype = "COLOR",
-        min = 0,
-        max = 1,
-        update = protoshader_update)
+                name = "Front Diffuse Color",
+                default = (0.8, 0.8, 0.9),
+                subtype = "COLOR",
+                min = 0,
+                max = 1,
+                update = studio_update)
     
-    bpy.types.Scene.solid_ligths_protoshader_back_diffcol =\
+    bpy.types.Scene.solid_lights_studio_back_diffcol = \
         bpy.props.FloatVectorProperty(
-        name = "Back Diffuse Color",
-        default = (0.32, 0.24, 0.24),
-        subtype = "COLOR",
-        min = 0,
-        max = 1,
-        update = protoshader_update)
+                name = "Fill Diffuse Color",
+                default = (0.32, 0.24, 0.24),
+                subtype = "COLOR",
+                min = 0,
+                max = 1,
+                update = studio_update)
     
-    bpy.types.Scene.solid_ligths_protoshader_front_speccol =\
+    bpy.types.Scene.solid_lights_studio_front_speccol = \
         bpy.props.FloatVectorProperty(
-        name = "Front Specular Color",
-        default = (0.45, 0.45, 0.51),
-        subtype = "COLOR",
-        min = 0,
-        max = 1,
-        update = protoshader_update)
+                name = "Front Specular Color",
+                default = (0.45, 0.45, 0.51),
+                subtype = "COLOR",
+                min = 0,
+                max = 1,
+                update = studio_update)
     
-    bpy.types.Scene.solid_ligths_protoshader_back_speccol =\
+    bpy.types.Scene.solid_lights_studio_back_speccol = \
         bpy.props.FloatVectorProperty(
-        name = "Back Specular Color",
-        default = (0.045, 0.029, 0.028),
-        subtype = "COLOR",
-        min = 0,
-        max = 1,
-        update = protoshader_update)
-    bpy.types.Scene.solid_ligths_protoshader_back_hueshift =\
+                name = "Fill Specular Color",
+                default = (0.045, 0.029, 0.028),
+                subtype = "COLOR",
+                min = 0,
+                max = 1,
+                update = studio_update)
+    bpy.types.Scene.solid_lights_studio_back_hueshift = \
         bpy.props.FloatVectorProperty(
-        name = "Hue Shift",
-        default = (0.398, 0.463, 0.495),
-        subtype = "COLOR",
-        min = 0,
-        max = 1,
-        update = protoshader_update)
+                name = "Hue Shift",
+                default = (0.398, 0.463, 0.495),
+                subtype = "COLOR",
+                min = 0,
+                max = 1,
+                update = studio_update)
+
 
 def unregister():
     bpy.utils.unregister_class(SolidLights)
-    bpy.utils.unregister_class(SolidLightsProtoShader)
-    del bpy.types.Scene.solid_ligths_protosahder_enable
-    del bpy.types.Scene.solid_lights_protoshader_type
-    del bpy.types.Scene.solid_lights_protoshader_direction
+    bpy.utils.unregister_class(SolidLightsStudio)
+    del bpy.types.Scene.solid_lights_studio_enable
+    del bpy.types.Scene.solid_lights_studio_type
+    del bpy.types.Scene.solid_lights_studio_direction
     
-    del bpy.types.Scene.solid_ligths_protoshader_front_diffcol
-    del bpy.types.Scene.solid_ligths_protoshader_back_diffcol
-    del bpy.types.Scene.solid_ligths_protoshader_front_speccol
-    del bpy.types.Scene.solid_ligths_protoshader_back_speccol
-    del bpy.types.Scene.solid_ligths_protoshader_back_hueshift
+    del bpy.types.Scene.solid_lights_studio_front_diffcol
+    del bpy.types.Scene.solid_lights_studio_back_diffcol
+    del bpy.types.Scene.solid_lights_studio_front_speccol
+    del bpy.types.Scene.solid_lights_studio_back_speccol
+    del bpy.types.Scene.solid_lights_studio_back_hueshift
+
 
 if __name__ == "__main__":
     register()
