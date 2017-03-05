@@ -18,7 +18,6 @@ Created by Jean Da Costa Machado
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-
 bl_info = {
     "name": "Solid Lights studio",
     "description": "utilities for solid shading",
@@ -56,7 +55,7 @@ def studio_update(self, context):
                         b_dcol[1] - (h_shift[1] - 0.5) * 0.5,
                         b_dcol[2] - (h_shift[2] - 0.5) * 0.5))
     
-    f_dcol_hp = Vector((f_dcol[0] * 0.7 + (h_shift[0] - 0.5) ,
+    f_dcol_hp = Vector((f_dcol[0] * 0.7 + (h_shift[0] - 0.5),
                         f_dcol[1] * 0.7 + (h_shift[1] - 0.5),
                         f_dcol[2] * 0.7 + (h_shift[2] - 0.5)))
     
