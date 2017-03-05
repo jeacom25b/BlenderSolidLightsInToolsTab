@@ -60,9 +60,9 @@ def studio_update(self, context):
                         f_dcol[1] * 0.7 + (h_shift[1] - 0.5),
                         f_dcol[2] * 0.7 + (h_shift[2] - 0.5)))
     
-    f_dcol_hm = Vector((f_dcol[0] * 0.7 - (h_shift[0] - 0.5) * 0.25,
-                        f_dcol[1] * 0.7 - (h_shift[1] - 0.5) * 0.25,
-                        f_dcol[2] * 0.7 - (h_shift[2] - 0.5) * 0.25))
+    f_dcol_hm = Vector((f_dcol[0] * 0.7 - (h_shift[0] - 0.5),
+                        f_dcol[1] * 0.7 - (h_shift[1] - 0.5),
+                        f_dcol[2] * 0.7 - (h_shift[2] - 0.5)))
     
     if context.scene.solid_lights_studio_type == '2K1F':
         dir = context.scene.solid_lights_studio_direction
