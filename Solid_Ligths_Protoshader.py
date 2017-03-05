@@ -1,6 +1,6 @@
 '''
 Copyright (C) 2017 Jean Da Costa Machado
-Jean3dimensional@gmail.com
+jean3dimenshonal@gmail.com
 
 Created by Jean Da Costa Machado
 
@@ -17,6 +17,7 @@ Created by Jean Da Costa Machado
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
+
 
 bl_info = {
     "name": "Solid Lights studio",
@@ -54,6 +55,14 @@ def studio_update(self, context):
     b_dcol_hm = Vector((b_dcol[0] - (h_shift[0] - 0.5) * 0.5,
                         b_dcol[1] - (h_shift[1] - 0.5) * 0.5,
                         b_dcol[2] - (h_shift[2] - 0.5) * 0.5))
+    
+    f_dcol_hp = Vector((f_dcol[0] * 0.7 + (h_shift[0] - 0.5) ,
+                        f_dcol[1] * 0.7 + (h_shift[1] - 0.5),
+                        f_dcol[2] * 0.7 + (h_shift[2] - 0.5)))
+    
+    f_dcol_hm = Vector((f_dcol[0] * 0.7 - (h_shift[0] - 0.5) * 0.25,
+                        f_dcol[1] * 0.7 - (h_shift[1] - 0.5) * 0.25,
+                        f_dcol[2] * 0.7 - (h_shift[2] - 0.5) * 0.25))
     
     if context.scene.solid_lights_studio_type == '2K1F':
         dir = context.scene.solid_lights_studio_direction
@@ -140,6 +149,27 @@ def studio_update(self, context):
         lights[1].specular_color = b_scol
         lights[2].diffuse_color = b_dcol_hm
         lights[2].specular_color = b_scol
+
+    if context.scene.solid_lights_studio_type == '2K1FR':
+        
+        dir = context.scene.solid_lights_studio_direction
+        dir = context.scene.solid_lights_studio_direction
+        rotation_euler1 = Euler((0, 0, 0.5), "XYZ")
+        rotation_euler2 = Euler((0, 0, -0.5), "XYZ")
+        front_dir1 = Vector((dir.x * 1.3, dir.y * 1.3, dir.z))
+        front_dir1.rotate(rotation_euler1)
+        front_dir2 = Vector((dir.x * 1.3, dir.y * 1.3, dir.z))
+        front_dir2.rotate(rotation_euler2)
+        back_dir = Vector((-dir.x, -dir.y, -dir.z + 1))
+        lights[0].direction = front_dir1
+        lights[1].direction = front_dir2
+        lights[2].direction = back_dir
+        lights[0].diffuse_color = f_dcol_hm
+        lights[0].specular_color = f_scol
+        lights[1].diffuse_color = f_dcol_hp
+        lights[1].specular_color = b_scol
+        lights[2].diffuse_color = b_dcol
+        lights[2].specular_color = b_scol
     
     return None
 
@@ -223,7 +253,8 @@ def register():
                 items = [("2K1F", "2Keys 1Fill", "Plastic Like material"),
                          ("1K2FW", "Wax 1Key 2Fill", "Fake Wax scatter material"),
                          ("1K2FM", "Metallic 1Key 2Fill", "Metallic material"),
-                         ("1K2F", "1Key 2Fill", "Smooth Diffuse Material")],
+                         ("1K2F", "1Key 2Fill", "Smooth Diffuse Material"),
+                         ("2K1FR", "2keys 1fill Rotated", "Flat Diffuse Material")],
                 default = "2K1F",
                 update = studio_update)
     
